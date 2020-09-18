@@ -45,7 +45,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -77,15 +77,15 @@ WSGI_APPLICATION = 'zoo.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'zoodb.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'zoodb.sqlite3',
         #  暂时使用zoodb.sqlite3
-        # 'ENGINE': 'django.db.backends.mysql',
-        # 'NAME': 'zooapi',
-        # 'USER': '****',
-        # 'PASSWORD': '****',
-        # 'HOST': '127.0.0.1',
-        # 'PORT': '3306',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'zooapi',
+        'USER': 'root',
+        'PASSWORD': 'Mysql123',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
 
