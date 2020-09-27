@@ -5,8 +5,9 @@
     <title>login</title>
 </head>
 <body>
-    <button id="btn">Click Meee</button>
-    <script src="js/jquery-3.5.1.min.js"></script>
+
+<button id="btn">Click Meee</button>
+<script src="js/jquery-3.5.1.min.js"></script>
 </body>
 <script>
     $("#btn").click(()=>{
@@ -27,5 +28,26 @@
         }
         })
     })
-    </script>
+    //浏览器地址栏参数，返回一个json对象
+    function getQueryParameters()
+    {
+           var param_json = {}
+           var query = window.location.href
+           query = query.split("?")[1]
+           var vars = query.split("&");
+           for (var i=0;i<vars.length;i++) {
+                var pair = vars[i].split("=");
+                param_json[pair[0]] = pair[1]
+           }
+           return param_json
+    }
+    $(document).ready(()=>{
+        param_json = getQueryParameters()
+        alert(JSON.stringify(param_json))
+
+    })
+
+
+
+</script>
 </html>

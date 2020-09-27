@@ -26,17 +26,21 @@ def get(request):
     @return: JsonResponse
     """
     article_id = request.GET.get('article_id')
-    # user_id = request.GET.get('user_id')
     folder_id = request.GET.get('folder_id')
+    user_id = request.GET.get('user_id')
     jsonobj = {}
     try:
         if article_id is not None:
             articles = Article.objects.filter(pk=article_id)
-        else:
+        elif folder_id is not None:
             articles = Article.objects.filter(folder_id=folder_id)
+        elif user_id is not None:
+            articles = Article.objects.filter(creator_id=user_id, folder_id=folder_id)
+
         atcs = []
         for article in articles:
             atc = {}
+            atc['article_id'] = article.id
             atc['creator_id'] = article.creator_id.id
             atc['folder_id'] = article.folder_id.id
             atc['title'] = article.title
@@ -110,4 +114,17 @@ def put(request):
 
 
 def delete(request):
-    return HttpResponse("<center><h1>article delete</h1></center>")
+    try:
+        # 从session中取出user_id
+        request.session['user_id'] = 1
+        user_id = request.session.get('user_id')
+        # 从参数列表中取出修改的信息，进行修改
+        query_dict = request.PUT
+        article_id = query_dict.get('article_id')
+        old_article = Article.objects.get(pk=article_id, creator_id=user_id)
+        old_article.delete()
+    except Exception as e:
+        jsonobj = {'error': e.__str__()}
+        res = JsonResponse(jsonobj, status=400)
+        return res
+    return JsonResponse({"success": "删除成功"})

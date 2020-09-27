@@ -94,11 +94,35 @@ def post(request):
 
 
 def put(request):
-    pass
-    return JsonResponse({"success": "put成功"})
+    try:
+        query_dict = request.PUT
+        folder_id = query_dict.get('folder_id')
+        folder_name = query_dict.get('folder_name')
+        request.session['user_id'] = 1
+        creator = User.objects.get(pk=request.session.get('user_id'))
+        old_folder = Folder.objects.gt(pk=folder_id, creator_id=creator)
+        if folder_name is not None:
+            old_folder.folder_name = folder_name
+        old_folder.save()
+    except Exception as e:
+        jsonobj = {'error': e.__str__()}
+        res = JsonResponse(jsonobj, status=400)
+        return res
+    return JsonResponse({"success": "修改成功"})
 
 
 def delete(request):
-    return HttpResponse("<center><h1>user delete</h1></center>")
+    try:
+        query_dict = request.DELETE
+        folder_id = query_dict.get('folder_id')
+        request.session['user_id'] = 1
+        creator = User.objects.get(pk=request.session.get('user_id'))
+        folder = Folder.objects.gt(pk=folder_id, creator_id=creator)
+        float.delete()
+    except Exception as e:
+        jsonobj = {'error': e.__str__()}
+        res = JsonResponse(jsonobj, status=400)
+        return res
+    return JsonResponse({"success": "删除成功"})
 
 
