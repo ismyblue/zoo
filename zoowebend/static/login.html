@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+</head>
+<body>
+    <button id="btn">Click Meee</button>
+    <script src="js/jquery-3.5.1.min.js"></script>
+</body>
+<script>
+    $("#btn").click(()=>{
+        $.ajax({
+        "url": "http://127.0.0.1:8000/zooapi/image",
+        "type": "delete",
+        "data": {
+            image_id: 1
+        },
+        "dateType": "json",
+        "success": (json)=>{
+            var last=JSON.stringify(json)
+            alert(last)
+        },
+        "error": (json)=>{
+            var last=JSON.stringify(json)
+            alert(last)
+        }
+        })
+    })
+    </script>
+</html>

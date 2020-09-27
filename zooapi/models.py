@@ -45,7 +45,7 @@ class User(models.Model):
 
     # db_column表示指定sql语句中字段名
     uuid = models.CharField(max_length=255, help_text='用户唯一标识')
-    username = models.CharField(max_length=255, help_text='用户名')
+    username = models.CharField(max_length=255, unique=True, help_text='用户名')
     password = models.CharField(max_length=255, help_text='密码')
     nickname = models.CharField(max_length=255, null=True, help_text='昵称')
     realName = models.CharField(max_length=255, null=True, help_text='真实姓名')
@@ -54,7 +54,7 @@ class User(models.Model):
     tel = models.CharField(max_length=11, null=True, help_text='手机号码（11位）')
     # image = models.ForeignKey(Image, on_delete=models.SET_NULL, null=True, help_text='头像图片地址')
     logo_url = models.CharField(max_length=255, null=True, blank=True, help_text='头像图片地址')
-    socre = models.IntegerField(default=0, help_text='积分')
+    socre = models.IntegerField(default=0, null=True, blank=True, help_text='积分')
     enable = models.BooleanField(default=True, help_text='账号启用状态，0/禁用，1/启用')
     birth = models.DateField(null=True, blank=True, help_text='生日')
     areaCode = models.ForeignKey(Area, on_delete=models.SET_NULL, null=True, help_text='行政区划码')

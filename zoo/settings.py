@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # 'zooapi.apps.ZooapiConfig',
     'zooapi',
+    'zoowebend',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'zooapi.middleware.DealWithPutDeleteMiddleware',
 ]
 
 ROOT_URLCONF = 'zoo.urls'
@@ -68,6 +70,10 @@ TEMPLATES = [
         },
     },
 ]
+
+# 配置session引擎，使用缓存session
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
 
 WSGI_APPLICATION = 'zoo.wsgi.application'
 
@@ -126,4 +132,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/web/'
+
+
+
+
+
+
+

@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from zooapi import urls
+from zoowebend import urls
 
 app_name = 'zooapi'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('zooapi/', include('zooapi.urls')),
+    path('zoowebend/', include('zoowebend.urls')),
 ]
