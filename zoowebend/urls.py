@@ -9,4 +9,6 @@ from zoowebend import views
 app_name = 'zoowebend'
 urlpatterns = [
     path('', views.index),
+    path('login/', views.login_get),
+    path('login_post/', views.login_post),
 ]

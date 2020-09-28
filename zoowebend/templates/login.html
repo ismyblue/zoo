@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}" type="text/css">
+    <script src="{% static 'js/login.js' %}"></script>
+</head>
+<body>
+<div id="txt"> try to move mouse</div>
+<div id="frame" onmouseover="show_frame()" onmouseout="show_frame()">
+    <form method="post" action="/zoowebend/login_post/">
+        <input type="text" id="username" placeholder="What's your name?">
+        <input type="password" id="password" placeholder="Input your password.">
+        <button type="submit">LOGIN</button>
+    </form>
+</div>
+</body>
+</html>
