@@ -9,7 +9,7 @@ from zooapi.models import User, Folder, Article, Image
 
 
 # api接口，url相同，按照请求方法不懂，分到到特定函数去处理。
-def deal_with_method(request):
+def process_method(request):
     if request.method == 'GET':
         return get(request)
     elif request.method == 'POST':
@@ -28,7 +28,6 @@ def get(request):
     @return: JsonResponse
     """
     # 取出用户id
-    request.session['user_id'] = 1
     user_id = request.session.get('user_id')
     page_size = request.GET.get('page_size')
     page_index = request.GET.get('page_index')
@@ -59,7 +58,6 @@ def post(request):
 
     try:
         query_dict = request.POST
-        request.session['user_id'] = 1
         creator = User.objects.get(pk=request.session.get('user_id'))
         image_name = query_dict.get('image_name')
         # 如果没有自定义图片名字，就随机生成图片名字
@@ -105,7 +103,6 @@ def post(request):
 def put(request):
     try:
         # 从session中取出user_id
-        request.session['user_id'] = 1
         user_id = request.session.get('user_id')
         # 从参数列表中取出修改的信息，进行修改
         query_dict = request.PUT
@@ -128,7 +125,6 @@ def put(request):
 def delete(request):
     try:
         # 从session中取出user_id
-        request.session['user_id'] = 1
         user_id = request.session.get('user_id')
         # 从参数列表中取出要删除的信息，进行删除
         query_dict = request.DELETE

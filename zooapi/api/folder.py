@@ -7,7 +7,7 @@ from zooapi.models import Folder, User
 import time, hashlib
 
 
-def deal_with_method(request):
+def process_method(request):
     """
     分发request到各个函数
     @param request:
@@ -80,7 +80,6 @@ def post(request):
     try:
         query_dict = request.POST
         folder_name = query_dict.get('folder_name')
-        request.session['user_id'] = 1
         creator_id = User.objects.get(pk=request.session.get('user_id'))
         parent_folder_id = query_dict.get('parent_folder_id')
         new_folder = Folder(folder_name=folder_name, creator_id=creator_id, parent_folder_id=parent_folder_id)
@@ -98,7 +97,6 @@ def put(request):
         query_dict = request.PUT
         folder_id = query_dict.get('folder_id')
         folder_name = query_dict.get('folder_name')
-        request.session['user_id'] = 1
         creator = User.objects.get(pk=request.session.get('user_id'))
         old_folder = Folder.objects.gt(pk=folder_id, creator_id=creator)
         if folder_name is not None:
@@ -115,7 +113,6 @@ def delete(request):
     try:
         query_dict = request.DELETE
         folder_id = query_dict.get('folder_id')
-        request.session['user_id'] = 1
         creator = User.objects.get(pk=request.session.get('user_id'))
         folder = Folder.objects.gt(pk=folder_id, creator_id=creator)
         float.delete()

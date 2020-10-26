@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'zooapi.middleware.DealWithPutDeleteMiddleware',
+    'zooapi.middleware.DealWithCrossDomainXHR',
 ]
 
 ROOT_URLCONF = 'zoo.urls'
@@ -134,8 +135,8 @@ USE_TZ = True
 
 STATIC_URL = '/web/'
 
-
-
+# 图片验证码5分钟过期
+IMAGE_CODE_EXPIRE = 300
 
 
 

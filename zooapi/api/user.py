@@ -8,7 +8,7 @@ import hashlib, time
 
 
 # api接口，url相同，按照请求方法不懂，分到到特定函数去处理。
-def deal_with_method(request):
+def process_method(request):
     if request.method == 'GET':
         return get(request)
     elif request.method == 'POST':
@@ -26,9 +26,10 @@ def get(request):
     @param request: HttpRequest对象
     @return: JsonResponse
     """
-    user_id = int(request.GET['user_id'])
-    jsonobj = {}
     try:
+        # user_id = request.session.get('user_id')
+        user_id = request.GET.get('user_id')
+        jsonobj = {}
         user = User.objects.get(pk=user_id)
         jsonobj['id'] = user.id
         jsonobj['username'] = user.username
@@ -94,7 +95,6 @@ def post(request):
 def put(request):
     try:
         # 从session中取出user_id
-        request.session['user_id'] = 1
         user_id = request.session.get('user_id')
         # 从参数列表中取出修改的信息，进行修改
         query_dict = request.PUT
@@ -102,6 +102,9 @@ def put(request):
         old_user = User.objects.get(pk=user_id, username=username)
         # password = hashlib.md5((query_dict.get('password')).encode('utf-8')).hexdigest()
         if query_dict.get('password') is not None:
+            old_password = query_dict.get('old_password')
+            if old_user.password != hashlib.md5(old_password.encode('utf-8')).hexdigest():
+                return JsonResponse({'results': 'error', 'error': '旧密码不正确'})
             old_user.password = hashlib.md5((query_dict.get('password')).encode('utf-8')).hexdigest()
         if query_dict.get('nickname') is not None:
             old_user.nickname = query_dict.get('nickname')
@@ -129,7 +132,6 @@ def put(request):
         if query_dict.get('personalInfo') is not None:
             old_user.personalInfo = query_dict.get('personalInfo')
         old_user.save()
-        print('修改成功')
     except Exception as e:
         jsonobj = {'error': e.__str__()}
         res = JsonResponse(jsonobj, status=400)

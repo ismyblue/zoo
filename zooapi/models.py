@@ -202,7 +202,11 @@ class Like(models.Model):
     updateTime = models.DateTimeField(auto_now=True, help_text='更新时间')
 
     def __str__(self):
-        return '{}点赞了{}的文章:{}'.format(self.operator_id.nickname, self.article_id.creator_id.nickname,
+        if self.operate_type:
+            like_type = '点赞了'
+        else:
+            like_type = '踩了踩'
+        return '{}{}{}的文章:{}'.format(self.operator_id.nickname, like_type, self.article_id.creator_id.nickname,
                                      self.article_id.title)
 
 

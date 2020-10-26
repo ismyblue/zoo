@@ -8,7 +8,7 @@ from zooapi.models import User, Folder, Article, Comment
 
 
 # api接口，url相同，按照请求方法不懂，分到到特定函数去处理。
-def deal_with_method(request):
+def process_method(request):
     if request.method == 'GET':
         return get(request)
     elif request.method == 'POST':
@@ -73,7 +73,6 @@ def post(request):
     @return:
     """
     try:
-        request.session['user_id'] = 1
         creator = User.objects.get(pk=request.session.get('user_id'))
         query_dict = request.POST
         article_id = query_dict.get('article_id')

@@ -7,7 +7,7 @@ from zooapi.models import User, Folder, Article
 
 
 # api接口，url相同，按照请求方法不懂，分到到特定函数去处理。
-def deal_with_method(request):
+def process_method(request):
     if request.method == 'GET':
         return get(request)
     elif request.method == 'POST':
@@ -28,8 +28,10 @@ def get(request):
     article_id = request.GET.get('article_id')
     folder_id = request.GET.get('folder_id')
     user_id = request.GET.get('user_id')
+    print(article_id, folder_id, user_id)
     jsonobj = {}
     try:
+        articles = []
         if article_id is not None:
             articles = Article.objects.filter(pk=article_id)
         elif folder_id is not None:
@@ -42,7 +44,10 @@ def get(request):
             atc = {}
             atc['article_id'] = article.id
             atc['creator_id'] = article.creator_id.id
-            atc['folder_id'] = article.folder_id.id
+            if article.folder_id is not None:
+                atc['folder_id'] = article.folder_id.id
+            else:
+                atc['folder_id'] = None
             atc['title'] = article.title
             atc['content_html'] = article.content_html
             atc['content_text'] = article.content_text
@@ -65,7 +70,6 @@ def post(request):
 
     try:
         query_dict = request.POST
-        request.session['user_id'] = 1
         creator = User.objects.get(pk=request.session.get('user_id'))
         folder = Folder.objects.get(pk=query_dict.get('folder_id'))
         title = query_dict.get('title')
@@ -75,7 +79,7 @@ def post(request):
         article = Article(creator_id=creator, folder_id=folder, title=title, content_text=content_text,
                           content_json=content_json, content_html=content_html)
         article.save()
-        print('新增文章成功')
+
     except Exception as e:
         jsonobj = {'error': e.__str__()}
         res = JsonResponse(jsonobj, status=400)
@@ -86,13 +90,11 @@ def post(request):
 def put(request):
     try:
         # 从session中取出user_id
-        request.session['user_id'] = 1
         user_id = request.session.get('user_id')
         # 从参数列表中取出修改的信息，进行修改
         query_dict = request.PUT
         article_id = query_dict.get('article_id')
         old_article = Article.objects.get(pk=article_id, creator_id=user_id)
-        print(old_article)
         if query_dict.get('title') is not None:
             old_article.title = query_dict.get('title')
         if query_dict.get('folder_id') is not None:
@@ -116,10 +118,9 @@ def put(request):
 def delete(request):
     try:
         # 从session中取出user_id
-        request.session['user_id'] = 1
         user_id = request.session.get('user_id')
         # 从参数列表中取出修改的信息，进行修改
-        query_dict = request.PUT
+        query_dict = request.DELETE
         article_id = query_dict.get('article_id')
         old_article = Article.objects.get(pk=article_id, creator_id=user_id)
         old_article.delete()
