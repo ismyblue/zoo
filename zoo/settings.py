@@ -32,8 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # 'zooapi.apps.ZooapiConfig',
-    'zooapi',
-    'zoowebend',
+    'zooapi',    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
